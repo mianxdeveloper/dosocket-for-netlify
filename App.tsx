@@ -19,6 +19,7 @@ import PrivacyPolicy from "./components/PrivacyPolicy";
 import ServicesPage from "./components/ServicesPage";
 
 import SplashCursor from "./components/UI/SplashCursor";
+import ChatBot from "./components/UI/ChatBot";
 
 const HomePage: React.FC = () => {
   return (
@@ -39,6 +40,7 @@ const HomePage: React.FC = () => {
         <Contact />
       </main>
       <Footer />
+      <ChatBot />
       <BackToTop />
     </>
   );
