@@ -1,240 +1,157 @@
-import React, { useState, useRef, useEffect } from 'react';
-import AnimatedInput from '../UI/AnimatedInput';
-import SectionLabel from '../UI/SectionLabel';
-import { ChevronDown, X } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState } from "react";
+import { Send, Sparkles } from "lucide-react";
+import SectionLabel from "../UI/SectionLabel";
 
 const Contact: React.FC = () => {
-  const [selectedServices, setSelectedServices] = useState<string[]>([]);
-  const [selectedBudget, setSelectedBudget] = useState<string>('');
-  const [isServiceOpen, setIsServiceOpen] = useState(false);
-  const [isBudgetOpen, setIsBudgetOpen] = useState(false);
-  
-  const serviceRef = useRef<HTMLDivElement>(null);
-  const budgetRef = useRef<HTMLDivElement>(null);
-
   const [formData, setFormData] = useState({
-     name: '',
-     email: '',
-     phone: '',
-     company: '',
-     details: ''
+    name: "",
+    email: "",
+    phone: "",
   });
-  
-  const services = ['Web Development', 'UI/UX Design', 'App Development', 'QA & Maintenance', 'Template Design', '3D Animation'];
-  const budgets = ['< $1k', '$1k - $5k', '$5k - $10k', '$10k - $20k', '$20k - $50k', '$50k+'];
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (serviceRef.current && !serviceRef.current.contains(event.target as Node)) {
-        setIsServiceOpen(false);
-      }
-      if (budgetRef.current && !budgetRef.current.contains(event.target as Node)) {
-        setIsBudgetOpen(false);
-      }
-    };
+  const [focusedField, setFocusedField] = useState<string | null>(null);
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-     setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const toggleService = (service: string) => {
-    setSelectedServices(prev => 
-      prev.includes(service) ? prev.filter(i => i !== service) : [...prev, service]
-    );
-    // Don't close on selection to allow multiple
-  };
-
-  const handleBudgetSelect = (budget: string) => {
-    setSelectedBudget(budget);
-    setIsBudgetOpen(false);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle form submission
+    console.log("Form submitted:", formData);
   };
 
   return (
-    <section id="contact" className="py-24 bg-white">
-      <div className="container mx-auto px-6 lg:px-12">
-        <div className="grid md:grid-cols-12 gap-12">
-          
-           <div className="md:col-span-4 lg:col-span-3">
-              <div className="md:sticky md:top-32 mb-8 md:mb-0">
-                 <SectionLabel text="Get in Touch" />
-                 <h2 className="font-display font-bold text-4xl md:text-6xl text-dosocket-900 mb-6 tracking-tight">Contact</h2>
-                 <p className="text-dosocket-500 text-base leading-relaxed max-w-xs">
-                    Ready to start your next project? We are here to help.
-                 </p>
+    <section
+      id="contact"
+      className="py-20 md:py-24 lg:py-28 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden"
+    >
+      {/* Modern background elements */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]" />
+      <div className="absolute top-0 -left-4 w-72 h-72 bg-dosocket-100 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob" />
+      <div className="absolute top-0 -right-4 w-72 h-72 bg-dosocket-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000" />
+      <div className="absolute bottom-0 left-20 w-72 h-72 bg-dosocket-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000" />
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-5xl mx-auto">
+          {/* Header with modern typography */}
+          <div className="text-center mb-12 md:mb-16">
+            <div className="inline-flex items-center gap-2 bg-dosocket-50 px-4 py-2 rounded-full mb-6 border border-dosocket-100">
+              <Sparkles size={16} className="text-dosocket-600" />
+              <SectionLabel text="Let's Connect" />
+            </div>
+            <h2 className="font-display font-bold text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-dosocket-900 mb-6 tracking-tight">
+              Get in <span className="text-dosocket-600">Touch</span>
+            </h2>
+            <p className="text-gray-600 text-lg md:text-xl max-w-2xl mx-auto">
+              Have a project in mind? We'd love to hear about it.
+            </p>
+          </div>
+
+          {/* Modern Form Card */}
+          <div className="bg-white rounded-3xl shadow-2xl shadow-gray-200/50 p-8 md:p-10 lg:p-12 border border-gray-100">
+            <form onSubmit={handleSubmit} className="space-y-8">
+              {/* Name Field */}
+              <div className="relative">
+                <div
+                  className={`absolute -top-3 left-4 px-2 bg-white text-sm transition-all duration-200 ${
+                    focusedField === "name" || formData.name
+                      ? "text-dosocket-600"
+                      : "text-gray-400"
+                  }`}
+                >
+                  Full Name
+                </div>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  onFocus={() => setFocusedField("name")}
+                  onBlur={() => setFocusedField(null)}
+                  placeholder="John Doe"
+                  className="w-full px-6 py-5 bg-transparent border-2 border-gray-200 rounded-2xl focus:border-dosocket-600 focus:outline-none transition-all duration-300 text-lg placeholder-gray-300"
+                />
+                {/* Decorative element */}
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-dosocket-400 opacity-0 group-focus-within:opacity-100 transition-opacity" />
               </div>
-           </div>
 
-           <div className="md:col-span-8 lg:col-span-9 bg-gray-50 border border-gray-100 rounded-3xl p-6 md:p-12 shadow-lg">
-              <div className="mb-8">
-                 <h2 className="font-display font-bold text-3xl md:text-5xl text-dosocket-900 mb-4">Start a Project</h2>
-                 <p className="text-gray-500">Let's build something extraordinary together.</p>
+              {/* Email Field */}
+              <div className="relative">
+                <div
+                  className={`absolute -top-3 left-4 px-2 bg-white text-sm transition-all duration-200 ${
+                    focusedField === "email" || formData.email
+                      ? "text-dosocket-600"
+                      : "text-gray-400"
+                  }`}
+                >
+                  Email Address
+                </div>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  onFocus={() => setFocusedField("email")}
+                  onBlur={() => setFocusedField(null)}
+                  placeholder="hello@example.com"
+                  className="w-full px-6 py-5 bg-transparent border-2 border-gray-200 rounded-2xl focus:border-dosocket-600 focus:outline-none transition-all duration-300 text-lg placeholder-gray-300"
+                />
               </div>
 
-              <form className="space-y-[18px]">
-                 {/* 01. Name */}
-                 <div className="flex gap-4 items-start">
-                    <span className="text-dosocket-accent font-mono text-lg mt-4 hidden sm:block">01</span>
-                    <AnimatedInput 
-                       name="name"
-                       label="What's your name?" 
-                       value={formData.name}
-                       onChange={handleInputChange}
+              {/* Phone Field */}
+              <div className="relative">
+                <div
+                  className={`absolute -top-3 left-4 px-2 bg-white text-sm transition-all duration-200 ${
+                    focusedField === "phone" || formData.phone
+                      ? "text-dosocket-600"
+                      : "text-gray-400"
+                  }`}
+                >
+                  Phone Number
+                </div>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  onFocus={() => setFocusedField("phone")}
+                  onBlur={() => setFocusedField(null)}
+                  placeholder="+1 (555) 000-0000"
+                  className="w-full px-6 py-5 bg-transparent border-2 border-gray-200 rounded-2xl focus:border-dosocket-600 focus:outline-none transition-all duration-300 text-lg placeholder-gray-300"
+                />
+              </div>
+
+              {/* Submit Button with modern design */}
+              <div className="pt-4">
+                <button
+                  type="submit"
+                  className="group relative w-full overflow-hidden rounded-2xl bg-dosocket-900 px-8 py-5 text-white transition-all duration-300 hover:bg-dosocket-800 hover:shadow-2xl hover:shadow-dosocket-900/25 active:scale-[0.98]"
+                >
+                  <span className="relative z-10 flex items-center justify-center gap-3 text-lg font-medium">
+                    Send Message
+                    <Send
+                      size={18}
+                      className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300"
                     />
-                 </div>
+                  </span>
+                  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-gradient-to-r from-dosocket-700 to-dosocket-600 transition-transform duration-500" />
+                </button>
+              </div>
 
-                 {/* 02. Email */}
-                 <div className="flex gap-4 items-start">
-                    <span className="text-dosocket-accent font-mono text-lg mt-4 hidden sm:block">02</span>
-                    <AnimatedInput 
-                       name="email"
-                       label="What's your email address?" 
-                       type="email" 
-                       value={formData.email}
-                       onChange={handleInputChange}
-                    />
-                 </div>
-                 
-                 {/* 03. Phone */}
-                 <div className="flex gap-4 items-start">
-                    <span className="text-dosocket-accent font-mono text-lg mt-4 hidden sm:block">03</span>
-                    <AnimatedInput 
-                       name="phone"
-                       label="What's your phone number?" 
-                       type="tel" 
-                       value={formData.phone}
-                       onChange={handleInputChange}
-                    />
-                 </div>
+              {/* Subtle privacy note */}
+              <p className="text-center text-sm text-gray-400 mt-6">
+                We'll get back to you within 24 hours
+              </p>
+            </form>
+          </div>
 
-                 {/* 04. Company */}
-                 <div className="flex gap-4 items-start">
-                    <span className="text-dosocket-accent font-mono text-lg mt-4 hidden sm:block">04</span>
-                    <AnimatedInput 
-                       name="company"
-                       label="What's your company/organization name?" 
-                       value={formData.company}
-                       onChange={handleInputChange}
-                    />
-                 </div>
-
-                 {/* 05. Services */}
-                 <div className="flex gap-4 items-start z-20 relative">
-                    <span className="text-dosocket-accent font-mono text-lg mt-2 hidden sm:block">05</span>
-                    <div className="w-full relative" ref={serviceRef}>
-                        <label className="block text-lg font-bold text-dosocket-900 mb-4">What services are you looking for?</label>
-                        
-                        <div 
-                           className="w-full bg-transparent border-b-2 border-gray-200 cursor-pointer py-4 flex justify-between items-center group hover:border-dosocket-900 transition-colors"
-                           onClick={() => setIsServiceOpen(!isServiceOpen)}
-                        >
-                           <span className={`${selectedServices.length > 0 ? 'text-dosocket-900 font-medium' : 'text-gray-400'}`}>
-                              {selectedServices.length > 0 ? `${selectedServices.length} services selected` : 'Select services'}
-                           </span>
-                           <ChevronDown className={`transition-transform duration-300 ${isServiceOpen ? 'rotate-180' : ''}`} />
-                        </div>
-
-                        <AnimatePresence>
-                           {isServiceOpen && (
-                              <motion.div 
-                                 initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                                 exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                                 className="absolute top-full left-0 w-full bg-white rounded-2xl shadow-2xl border border-gray-100 p-4 mt-2 z-50 grid grid-cols-1 md:grid-cols-2 gap-2 max-h-[300px] overflow-y-auto"
-                              >
-                                 {services.map(service => (
-                                    <div 
-                                       key={service}
-                                       onClick={() => toggleService(service)}
-                                       className={`p-3 rounded-xl cursor-pointer transition-all flex items-center justify-between ${selectedServices.includes(service) ? 'bg-dosocket-900 text-white' : 'hover:bg-gray-50 text-gray-600'}`}
-                                    >
-                                       <span className="text-sm font-medium">{service}</span>
-                                       {selectedServices.includes(service) && <span className="w-2 h-2 rounded-full bg-dosocket-accent"></span>}
-                                    </div>
-                                 ))}
-                              </motion.div>
-                           )}
-                        </AnimatePresence>
-
-                        <div className="mt-4 flex flex-wrap gap-2">
-                           {selectedServices.map(service => (
-                              <span key={service} className="px-4 py-2 bg-dosocket-900 text-white rounded-[0.8em] text-sm flex items-center gap-2 animate-fadeIn">
-                                 {service}
-                                 <button type="button" onClick={(e) => { e.stopPropagation(); toggleService(service); }} className="hover:text-dosocket-accent">
-                                    <X size={14} />
-                                 </button>
-                              </span>
-                           ))}
-                        </div>
-                    </div>
-                 </div>
-
-                 {/* 06. Budget */}
-                 <div className="flex gap-4 items-start z-10 relative">
-                    <span className="text-dosocket-accent font-mono text-lg mt-2 hidden sm:block">06</span>
-                    <div className="w-full relative" ref={budgetRef}>
-                        <label className="block text-lg font-bold text-dosocket-900 mb-4">What have you budgeted for this project?</label>
-                        
-                        <div 
-                           className="w-full bg-transparent border-b-2 border-gray-200 cursor-pointer py-4 flex justify-between items-center group hover:border-dosocket-900 transition-colors"
-                           onClick={() => setIsBudgetOpen(!isBudgetOpen)}
-                        >
-                           <span className={`${selectedBudget ? 'text-dosocket-900 font-medium' : 'text-gray-400'}`}>
-                              {selectedBudget || 'Select a budget range'}
-                           </span>
-                           <ChevronDown className={`transition-transform duration-300 ${isBudgetOpen ? 'rotate-180' : ''}`} />
-                        </div>
-
-                        <AnimatePresence>
-                           {isBudgetOpen && (
-                              <motion.div 
-                                 initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                                 exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                                 className="absolute top-full left-0 w-full bg-white rounded-2xl shadow-2xl border border-gray-100 p-4 mt-2 z-50 grid grid-cols-1 md:grid-cols-2 gap-2 max-h-[300px] overflow-y-auto"
-                              >
-                                 {budgets.map(budget => (
-                                    <div 
-                                       key={budget}
-                                       onClick={() => handleBudgetSelect(budget)}
-                                       className={`p-3 rounded-xl cursor-pointer transition-all flex items-center justify-between ${selectedBudget === budget ? 'bg-dosocket-900 text-white' : 'hover:bg-gray-50 text-gray-600'}`}
-                                    >
-                                       <span className="text-sm font-medium">{budget}</span>
-                                       {selectedBudget === budget && <span className="w-2 h-2 rounded-full bg-dosocket-accent"></span>}
-                                    </div>
-                                 ))}
-                              </motion.div>
-                           )}
-                        </AnimatePresence>
-                    </div>
-                 </div>
-
-                 {/* 07. Project Details */}
-                 <div className="flex gap-4 items-start">
-                    <span className="text-dosocket-accent font-mono text-lg mt-4 hidden sm:block">07</span>
-                    <div className="w-full">
-                       <AnimatedInput 
-                          name="details"
-                          label="Tell us about your project" 
-                          value={formData.details}
-                          onChange={handleInputChange}
-                          multiline
-                       />
-                    </div>
-                 </div>
-
-                 <div className="flex flex-col md:flex-row items-center gap-6 justify-end pt-4">
-                    <button type="submit" className="bg-dosocket-900 text-white px-12 py-4 rounded-[0.8em] font-bold hover:bg-dosocket-700 transition-all w-full md:w-auto transform active:scale-95 shadow-xl flex items-center gap-2 justify-center group">
-                       Send Proposal
-                       <span className="w-2 h-2 rounded-full bg-dosocket-accent group-hover:scale-150 transition-transform"></span>
-                    </button>
-                 </div>
-              </form>
-           </div>
+          {/* Modern decorative elements */}
+          <div className="flex justify-center gap-3 mt-8">
+            <div className="w-2 h-2 rounded-full bg-dosocket-200" />
+            <div className="w-2 h-2 rounded-full bg-dosocket-300" />
+            <div className="w-2 h-2 rounded-full bg-dosocket-400" />
+          </div>
         </div>
       </div>
     </section>
