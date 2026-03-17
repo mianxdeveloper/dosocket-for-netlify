@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import Button from "./UI/Button";
 import { useLocation, useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -16,6 +17,15 @@ const Navbar: React.FC = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [isMobileMenuOpen]);
 
   const handleNavClick = (href: string) => {
     setIsMobileMenuOpen(false);
@@ -38,117 +48,134 @@ const Navbar: React.FC = () => {
     { name: "Contact", href: "#contact" },
   ];
 
+  // Modern Floating Pill Styles
+  const navbarClasses = isScrolled
+    ? "top-4 max-w-5xl mx-auto rounded-full bg-dosocket-900/70 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.2)] py-3 px-6 lg:px-8"
+    : "top-0 max-w-full mx-auto bg-transparent py-6 px-6 lg:px-12";
+
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled || isMobileMenuOpen
-          ? "bg-dosocket-900/60 backdrop-blur-xl border-b border-white/5 py-4"
-          : "bg-transparent py-6"
-      }`}
-    >
-      <div className="container mx-auto px-6 lg:px-12">
-        <div className="flex items-center justify-between">
-          {/* Logo with Animation */}
+    <>
+      <header className="fixed left-0 right-0 z-50 transition-all duration-500 ease-in-out pointer-events-none w-full px-4 sm:px-6">
+        <nav
+          className={`pointer-events-auto relative mx-auto transition-all duration-500 ease-in-out flex items-center justify-between w-full ${navbarClasses}`}
+        >
+          {/* Logo Section */}
           <a
             href="/"
-            className="flex items-center gap-2 group relative overflow-hidden px-2 py-1"
+            className="flex items-center gap-2 group relative overflow-hidden z-50"
           >
-            <style>{`
-               .logo-shine {
-                  background: linear-gradient(to right, transparent 0%, rgba(255,255,255,0.8) 50%, transparent 100%);
-                  background-size: 200% auto;
-                  -webkit-background-clip: text;
-                  -webkit-text-fill-color: transparent;
-                  animation: shine 5s linear infinite;
-               }
-               
-               .group:hover .logo-text {
-                  filter: blur(0px);
-                  transition: filter 0.5s ease;
-               }
-               
-               .logo-text {
-                  transition: all 0.5s ease;
-               }
-
-               .group:hover .logo-text-back {
-                  opacity: 1;
-                  transform: scale(1.1) translateX(4px);
-                  filter: blur(4px);
-               }
-            `}</style>
-
-            {/* SVG Logo */}
             <img
               src="/images/logo/secondary.svg"
               alt="Dosocket Logo"
-              className="h-6 w-auto group-hover:scale-110 group-hover:drop-shadow-[0_0_8px_rgba(164,254,235,0.8)] transition-all duration-500"
+              className="h-7 w-auto transition-transform duration-500 group-hover:scale-105"
             />
-
-            {/* Optional: You can keep the animated dot or remove it */}
-            {/* <div className="w-3 h-3 rounded-full bg-dosocket-accent group-hover:scale-125 group-hover:shadow-[0_0_10px_rgba(164,254,235,0.8)] transition-all duration-500"></div> */}
           </a>
 
-          {/* Desktop Links */}
-          <div className="hidden md:flex items-center space-x-8 bg-dosocket-surface/30 px-8 py-3 rounded-full border border-dosocket-border/50 backdrop-blur-md hover:bg-dosocket-surface/50 transition-all duration-500 ease-in-out">
+          {/* Desktop Links - Minimalist Hover Effects */}
+          <div className="hidden md:flex items-center space-x-1 lg:space-x-2 absolute left-1/2 -translate-x-1/2">
             {navLinks.map((link) => (
               <button
                 key={link.name}
                 onClick={() => handleNavClick(link.href)}
-                className="text-sm font-medium text-dosocket-subtext hover:text-dosocket-accent transition-all duration-300 relative group py-1"
+                className="relative px-4 py-2 text-sm font-medium text-dosocket-subtext hover:text-white transition-colors duration-300 group overflow-hidden rounded-full"
               >
-                <span className="relative z-10 group-hover:-translate-y-[2px] inline-block transition-transform duration-300 ease-out">
-                  {link.name}
-                </span>
-                <span className="absolute bottom-0 left-0 w-full h-[2px] bg-dosocket-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left ease-out"></span>
+                <span className="relative z-10">{link.name}</span>
+                {/* Subtle background glow on hover */}
+                <span className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
               </button>
             ))}
           </div>
 
-          {/* CTA */}
-          <div className="hidden md:block">
+          {/* Desktop CTA */}
+          <div className="hidden md:flex items-center z-50">
             <Button
               variant="outline"
-              className="px-5 py-2 text-sm backdrop-blur-sm"
+              className="px-6 py-2.5 text-sm font-medium border-dosocket-accent/30 hover:border-dosocket-accent text-white rounded-full transition-all duration-300"
               onClick={() => handleNavClick("#contact")}
             >
               Let's Talk
             </Button>
           </div>
 
-          {/* Mobile Toggle */}
+          {/* Mobile Menu Toggle */}
           <button
-            className="md:hidden text-dosocket-text"
+            className="md:hidden relative z-50 p-2 text-white hover:text-dosocket-accent transition-colors"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle Menu"
           >
-            {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+            <AnimatePresence mode="wait">
+              {isMobileMenuOpen ? (
+                <motion.div
+                  key="close"
+                  initial={{ opacity: 0, rotate: -90 }}
+                  animate={{ opacity: 1, rotate: 0 }}
+                  exit={{ opacity: 0, rotate: 90 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <X size={24} />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="menu"
+                  initial={{ opacity: 0, rotate: 90 }}
+                  animate={{ opacity: 1, rotate: 0 }}
+                  exit={{ opacity: 0, rotate: -90 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Menu size={24} />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </button>
-        </div>
-      </div>
+        </nav>
+      </header>
 
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden bg-dosocket-dark/95 backdrop-blur-xl border-b border-dosocket-border absolute w-full left-0 top-full">
-          <div className="px-6 py-8 flex flex-col space-y-6">
-            {navLinks.map((link) => (
-              <button
-                key={link.name}
-                onClick={() => handleNavClick(link.href)}
-                className="text-xl font-display text-dosocket-subtext hover:text-dosocket-accent text-left"
+      {/* Full-Screen Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: "-100%" }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: "-100%" }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-40 bg-dosocket-900/95 backdrop-blur-3xl flex flex-col justify-center items-center px-6"
+          >
+            {/* Ambient Background Glows for Mobile Menu */}
+            <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-dosocket-accent/10 rounded-full blur-[80px] pointer-events-none" />
+            <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-white/5 rounded-full blur-[80px] pointer-events-none" />
+
+            <div className="flex flex-col items-center space-y-8 w-full max-w-md relative z-10">
+              {navLinks.map((link, i) => (
+                <motion.button
+                  key={link.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 + i * 0.1, duration: 0.4 }}
+                  onClick={() => handleNavClick(link.href)}
+                  className="text-4xl sm:text-5xl font-display font-medium text-white hover:text-dosocket-accent transition-colors duration-300 tracking-tight"
+                >
+                  {link.name}
+                </motion.button>
+              ))}
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6, duration: 0.4 }}
+                className="w-full pt-8 mt-4 border-t border-white/10 flex justify-center"
               >
-                {link.name}
-              </button>
-            ))}
-            <Button
-              className="w-full"
-              onClick={() => handleNavClick("#contact")}
-            >
-              Let's Talk
-            </Button>
-          </div>
-        </div>
-      )}
-    </nav>
+                <Button
+                  className="w-full sm:w-auto px-12 py-4 text-lg rounded-full"
+                  onClick={() => handleNavClick("#contact")}
+                >
+                  Start a Project
+                </Button>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 

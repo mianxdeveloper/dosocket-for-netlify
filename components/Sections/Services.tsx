@@ -15,7 +15,7 @@ const servicesData: ServiceItem[] = [
     tags: ["Design Audits", "UX Research", "Prototyping"],
     linkId: "ui-ux",
     icon: <Sparkles className="w-6 h-6" />,
-    color: "from-blue-500 to-cyan-400",
+    color: "from-[#0F4A3E] to-[#0F4A3E]",
   },
   {
     id: "02",
@@ -26,7 +26,7 @@ const servicesData: ServiceItem[] = [
     tags: ["SaaS Design", "React/Next.js", "Dashboard Architecture"],
     linkId: "web-app",
     icon: <Zap className="w-6 h-6" />,
-    color: "from-purple-500 to-pink-500",
+    color: "from-[#0F4A3E] to-[#0F4A3E]",
   },
   {
     id: "03",
@@ -37,7 +37,7 @@ const servicesData: ServiceItem[] = [
     tags: ["Full Stack", "CMS Integration", "API Development"],
     linkId: "web-dev",
     icon: <Shield className="w-6 h-6" />,
-    color: "from-green-500 to-emerald-400",
+    color: "from-[#0F4A3E] to-[#0F4A3E]",
   },
   {
     id: "04",
@@ -48,7 +48,7 @@ const servicesData: ServiceItem[] = [
     tags: ["SEO & SEM", "Social Media", "Content Strategy"],
     linkId: "digital-marketing",
     icon: <TrendingUp className="w-6 h-6" />,
-    color: "from-orange-500 to-red-400",
+    color: "from-[#0F4A3E] to-[#0F4A3E]",
   },
 ];
 

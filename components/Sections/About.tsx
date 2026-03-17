@@ -41,12 +41,12 @@ const About: React.FC = () => {
               </div>
 
               {/* Minimal floating element - hidden on mobile */}
-              <div className="hidden md:block absolute -bottom-6 -right-6 w-32 h-32 bg-white border border-gray-200 rounded-2xl flex items-center justify-center shadow-lg">
-                <div className="text-center">
-                  <span className="block text-3xl font-light text-dosocket-900">
+              <div className="hidden md:flex absolute -bottom-6 -right-6 w-32 h-32 bg-white border border-gray-200 rounded-2xl items-center justify-center shadow-lg">
+                <div className="flex flex-col items-center justify-center text-center">
+                  <span className="block text-3xl font-light text-dosocket-900 leading-none mb-1">
                     2026
                   </span>
-                  <span className="text-xs uppercase tracking-[0.3em] text-gray-400">
+                  <span className="text-[10px] uppercase tracking-[0.2em] text-gray-400 leading-none">
                     Founded
                   </span>
                 </div>
