@@ -15,129 +15,166 @@ const Hero: React.FC = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % words.length);
-    }, 4000);
+    }, 4000); // Slower interval for letter animation
     return () => clearInterval(interval);
   }, []);
 
   const currentWord = words[index];
 
-  // Animation variants for a smoother, central entrance
-  const letterVariants = {
-    hidden: { opacity: 0, y: 30, filter: "blur(10px)" },
+  // Animation variants for stagger effect
+  const containerVariants = {
+    hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      y: 0,
-      filter: "blur(0px)",
-      transition: { type: "spring", damping: 15, stiffness: 150 },
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
     },
     exit: {
       opacity: 0,
-      y: -30,
-      filter: "blur(10px)",
-      transition: { duration: 0.3 },
+      transition: {
+        staggerChildren: 0.05,
+        staggerDirection: -1,
+      },
     },
   };
 
-  return (
-    <section className="relative min-h-[100svh] flex items-center justify-center py-20 lg:py-32 overflow-hidden bg-dosocket-900">
-      {/* Custom Background Mix with #A4FEEB Accent Shapes */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Top Right Glow */}
-        <div
-          className="absolute -top-20 -right-20 w-[400px] h-[400px] md:w-[600px] md:h-[600px] rounded-full blur-[120px] opacity-[0.08] md:opacity-[0.06]"
-          style={{ backgroundColor: "#A4FEEB" }}
-        />
-        {/* Bottom Left Glow */}
-        <div
-          className="absolute -bottom-32 -left-20 w-[500px] h-[500px] md:w-[700px] md:h-[700px] rounded-full blur-[150px] opacity-[0.06] md:opacity-[0.04]"
-          style={{ backgroundColor: "#A4FEEB" }}
-        />
-        {/* Center subtle depth */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-dosocket-900/50 blur-[100px] z-10" />
-      </div>
+  const letterVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring", damping: 12, stiffness: 200 },
+    },
+    exit: { opacity: 0, y: -20 },
+  };
 
-      {/* Main Container with improved padding for breathing room */}
-      <div className="container mx-auto px-6 sm:px-12 md:px-16 lg:px-24 relative z-20">
+  return (
+    <section className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-dosocket-900">
+      {/* Overlay to ensure text readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-dosocket-900/80 z-10 pointer-events-none"></div>
+
+      {/* Main Content */}
+      <div className="container mx-auto px-6 lg:px-12 relative z-20 flex flex-col items-center md:items-start text-center md:text-left h-full justify-center min-h-[60vh]">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          className="flex flex-col items-center text-center max-w-6xl mx-auto"
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="w-full"
         >
-          {/* Main Title Stack */}
-          <h1 className="font-display font-bold text-6xl sm:text-7xl md:text-8xl lg:text-[120px] xl:text-[150px] leading-[0.9] text-white tracking-tighter mb-8 md:mb-12">
-            BUILD{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40">
-              IMPACT.
+          {/* Top UX Tag */}
+          <div className="mb-6">
+            <span className="text-dosocket-muted uppercase tracking-widest text-sm font-medium">
+              {/* Premium Agency */}
             </span>
+          </div>
+
+          {/* Main Heading */}
+          <h1 className="font-display font-medium text-5xl sm:text-6xl md:text-8xl lg:text-[140px] leading-[0.9] text-white mb-8 tracking-tight">
+            Build Brand.
           </h1>
 
-          {/* Animated Sub-headline */}
-          <div className="flex flex-col items-center justify-center mb-10 md:mb-14">
-            <span className="text-dosocket-subtext text-xl sm:text-2xl md:text-3xl font-light mb-3">
-              The partner of choice for
-            </span>
+          {/* Subheading with Animation */}
+          <div className="w-full max-w-5xl mb-12">
+            <div className="flex flex-col md:flex-row items-center md:items-center gap-x-6 gap-y-2">
+              {/* Trusted by Text - White, No Line */}
+              <h2 className="font-display font-normal text-2xl sm:text-3xl md:text-5xl text-white shrink-0 leading-none">
+                Trusted by
+              </h2>
 
-            <div className="h-12 sm:h-16 relative flex items-center justify-center">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentWord}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  className="flex gap-x-[2px] sm:gap-x-1"
-                >
-                  {currentWord.split("").map((char, i) => (
-                    <motion.span
-                      key={`${currentWord}-${i}`}
-                      variants={letterVariants}
-                      transition={{ delay: i * 0.04 }}
-                      className={`font-display font-bold text-3xl sm:text-5xl md:text-6xl text-dosocket-accent ${
-                        char === " " ? "mr-4" : ""
-                      }`}
-                    >
-                      {char}
-                    </motion.span>
-                  ))}
-                </motion.div>
-              </AnimatePresence>
+              {/* Animated Text - Letter by Letter */}
+              <div className="h-12 md:h-16 relative w-full md:w-auto overflow-hidden flex items-center justify-center md:justify-start">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentWord}
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    className="flex space-x-[2px]"
+                  >
+                    {currentWord.split("").map((char, i) => (
+                      <motion.span
+                        key={`${currentWord}-${i}`}
+                        variants={letterVariants}
+                        className={`font-display font-bold text-3xl md:text-5xl text-dosocket-accent leading-none ${
+                          char === " " ? "mr-4" : ""
+                        }`}
+                      >
+                        {char}
+                      </motion.span>
+                    ))}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
             </div>
           </div>
 
-          {/* Description */}
-          <p className="text-dosocket-muted text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed mb-12 md:mb-16 opacity-90">
-            We bridge the gap between bold ideas and digital reality.
-            Specialized in crafting high-performance ecosystems that scale your
-            vision globally.
+          <p className="text-dosocket-subtext text-lg max-w-xl leading-relaxed mb-12">
+            Goodbye generic websites & empty promises. We offer tools &
+            strategies to grow your business & amplify your brand.
           </p>
 
-          {/* Centered Actions */}
-          <div className="flex flex-col sm:flex-row gap-5 sm:gap-8 items-center justify-center w-full max-w-md mx-auto sm:max-w-none">
+          {/* Actions */}
+          <div className="flex flex-col md:flex-row gap-6 items-center">
             <FancyButton
               variant="primary"
-              className="w-full sm:w-auto min-w-[200px] text-lg py-4"
               onClick={() =>
                 document
                   .getElementById("contact")
                   ?.scrollIntoView({ behavior: "smooth" })
               }
             >
-              Start a Project
+              Let's Talk
             </FancyButton>
 
             <Button
               variant="accent-outline"
-              className="w-full sm:w-auto min-w-[200px] text-lg py-4"
               onClick={() =>
                 document
                   .getElementById("projects")
                   ?.scrollIntoView({ behavior: "smooth" })
               }
             >
-              View Portfolio
+              Featured Work
             </Button>
           </div>
         </motion.div>
+
+        {/* Right side Services List */}
+        {/* <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+          className="absolute right-0 top-1/2 -translate-y-1/2 hidden lg:block text-right pr-12"
+        >
+          <ul className="space-y-4 text-sm text-dosocket-muted/60 font-medium tracking-[0.1em] uppercase">
+            {[
+              "UI/UX Designing",
+              "Web Application",
+              "Web Development",
+              "Digital Marketing",
+            ].map((service) => (
+              <li
+                key={service}
+                className="hover:text-dosocket-accent transition-all duration-300 cursor-pointer flex items-center justify-end gap-3 group"
+                onClick={() =>
+                  window.dispatchEvent(
+                    new CustomEvent("open-service", {
+                      detail: { title: service },
+                    })
+                  )
+                }
+              >
+                <span className="group-hover:-translate-x-2 transition-transform duration-300">
+                  {service}
+                </span>
+                <div className="w-1.5 h-1.5 rounded-full bg-dosocket-accent/30 group-hover:bg-dosocket-accent transition-colors"></div>
+              </li>
+            ))}
+          </ul>
+        </motion.div> */}
       </div>
     </section>
   );

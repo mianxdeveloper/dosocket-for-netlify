@@ -48,9 +48,9 @@ const Navbar: React.FC = () => {
     { name: "Contact", href: "#contact" },
   ];
 
-  // Modern Floating Pill Styles
+  // Updated: Square-rounded (rounded-2xl) and border logic applied here
   const navbarClasses = isScrolled
-    ? "top-4 max-w-5xl mx-auto rounded-full bg-dosocket-900/70 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.2)] py-3 px-6 lg:px-8"
+    ? "top-4 max-w-5xl mx-auto rounded-2xl bg-dosocket-900/70 backdrop-blur-xl border-transparent shadow-[0_8px_32px_rgba(0,0,0,0.3)] py-3 px-6 lg:px-8"
     : "top-0 max-w-full mx-auto bg-transparent py-6 px-6 lg:px-12";
 
   return (
@@ -71,26 +71,26 @@ const Navbar: React.FC = () => {
             />
           </a>
 
-          {/* Desktop Links - Minimalist Hover Effects */}
+          {/* Desktop Links - Updated to rounded-lg to match the new theme */}
           <div className="hidden md:flex items-center space-x-1 lg:space-x-2 absolute left-1/2 -translate-x-1/2">
             {navLinks.map((link) => (
               <button
                 key={link.name}
                 onClick={() => handleNavClick(link.href)}
-                className="relative px-4 py-2 text-sm font-medium text-dosocket-subtext hover:text-white transition-colors duration-300 group overflow-hidden rounded-full"
+                className="relative px-4 py-2 text-sm font-medium text-dosocket-subtext hover:text-white transition-colors duration-300 group overflow-hidden rounded-lg"
               >
                 <span className="relative z-10">{link.name}</span>
                 {/* Subtle background glow on hover */}
-                <span className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
+                <span className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
               </button>
             ))}
           </div>
 
-          {/* Desktop CTA */}
+          {/* Desktop CTA - Updated to rounded-xl */}
           <div className="hidden md:flex items-center z-50">
             <Button
               variant="outline"
-              className="px-6 py-2.5 text-sm font-medium border-dosocket-accent/30 hover:border-dosocket-accent text-white rounded-full transition-all duration-300"
+              className="px-6 py-2.5 text-sm font-medium border-dosocket-accent/30 hover:border-dosocket-accent text-white rounded-xl transition-all duration-300"
               onClick={() => handleNavClick("#contact")}
             >
               Let's Talk
@@ -164,8 +164,9 @@ const Navbar: React.FC = () => {
                 transition={{ delay: 0.6, duration: 0.4 }}
                 className="w-full pt-8 mt-4 border-t border-white/10 flex justify-center"
               >
+                {/* Mobile CTA - Updated to rounded-xl */}
                 <Button
-                  className="w-full sm:w-auto px-12 py-4 text-lg rounded-full"
+                  className="w-full sm:w-auto px-12 py-4 text-lg rounded-xl"
                   onClick={() => handleNavClick("#contact")}
                 >
                   Start a Project

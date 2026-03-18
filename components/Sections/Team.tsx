@@ -99,7 +99,6 @@ const teamMembers: TeamMember[] = [
 const Team: React.FC = () => {
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
 
-  // Custom Pinterest icon component
   const PinterestIcon = ({ size = 14 }: { size?: number }) => (
     <svg
       width={size}
@@ -113,19 +112,21 @@ const Team: React.FC = () => {
   );
 
   return (
-    <section className="py-32 bg-gradient-to-br from-gray-50 to-white relative">
+    <section className="py-32 bg-dosocket-800 relative">
       <div className="container mx-auto px-6 lg:px-12">
         <div className="mb-20 text-center max-w-3xl mx-auto">
-          <div className="flex justify-center mb-6">
-            <SectionLabel text="Our Team" light />
+          {/* Using a targeted class to force just the text color of the SectionLabel to accent */}
+          <div className="flex justify-center mb-6 [&_*]:!text-dosocket-accent">
+            <SectionLabel text="Our Team" />
           </div>
-          <h2 className="font-display font-bold text-5xl md:text-6xl text-gray-900 tracking-tight mb-6">
-            <span className="text-teal-500">Meet the</span>{" "}
-            <span className="text-white bg-gray-900 px-4 py-1 rounded-xl transform -rotate-2 inline-block">
+
+          <h2 className="font-display font-bold text-5xl md:text-6xl text-white tracking-tight mb-6">
+            <span className="text-dosocket-accent">Meet the</span>{" "}
+            <span className="text-white bg-dosocket-900 px-4 py-1 rounded-xl transform -rotate-2 inline-block shadow-lg">
               Minds
             </span>
           </h2>
-          <p className="text-gray-600 text-lg">
+          <p className="text-dosocket-muted text-lg">
             A collective of visionaries, creators, and strategists dedicated to
             redefining the digital landscape.
           </p>
@@ -133,45 +134,50 @@ const Team: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 justify-items-center">
           {teamMembers.map((member) => (
+            // Changed background to white (bg-white)
             <div
               key={member.id}
-              className="group w-full max-w-[290px] bg-white rounded-3xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden"
+              className="group w-full max-w-[290px] bg-white rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
             >
               <div className="p-6">
-                <div className="relative mb-4 mx-auto">
-                  <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-teal-500 mx-auto">
+                <div className="relative mb-4 mx-auto flex justify-center">
+                  {/* Removed the border completely */}
+                  <div className="w-24 h-24 rounded-2xl overflow-hidden bg-gray-100">
                     <img
                       src={member.image}
                       alt={member.name}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       loading="lazy"
                     />
                   </div>
                 </div>
 
                 <div className="text-center">
+                  {/* Text flipped to dark colors to be visible on the white card */}
                   <h3 className="font-bold text-xl text-gray-900 mb-1">
                     {member.name}
                   </h3>
                   <p className="text-sm text-gray-500 mb-3">{member.role}</p>
 
                   <div className="space-y-1 mb-4">
-                    <span className="inline-block px-2 py-1 text-xs font-medium bg-gray-100 text-gray-600 rounded-full">
+                    <span className="inline-block px-3 py-1 text-xs font-medium bg-gray-100 text-gray-600 rounded-xl">
                       {member.country}
                     </span>
-                    <p className="text-xs text-gray-500">{member.experience}</p>
-                    <p className="text-xs font-medium text-teal-600">
+                    <p className="text-xs text-gray-500 mt-2">
+                      {member.experience}
+                    </p>
+                    <p className="text-xs font-medium text-dosocket-500">
                       {member.specialty}
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                  <div className="flex gap-2">
+                  <div className="flex gap-1">
                     {member.socials.linkedin && (
                       <a
                         href={member.socials.linkedin}
-                        className="p-2 text-gray-400 hover:text-teal-500 transition-colors"
+                        className="p-2 text-gray-400 hover:text-dosocket-accent transition-colors"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -181,7 +187,7 @@ const Team: React.FC = () => {
                     {member.socials.instagram && (
                       <a
                         href={member.socials.instagram}
-                        className="p-2 text-gray-400 hover:text-teal-500 transition-colors"
+                        className="p-2 text-gray-400 hover:text-dosocket-accent transition-colors"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -191,7 +197,7 @@ const Team: React.FC = () => {
                     {member.socials.pinterest && (
                       <a
                         href={member.socials.pinterest}
-                        className="p-2 text-gray-400 hover:text-teal-500 transition-colors"
+                        className="p-2 text-gray-400 hover:text-dosocket-accent transition-colors"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -201,7 +207,7 @@ const Team: React.FC = () => {
                     {member.socials.portfolio && (
                       <a
                         href={member.socials.portfolio}
-                        className="p-2 text-gray-400 hover:text-teal-500 transition-colors"
+                        className="p-2 text-gray-400 hover:text-dosocket-accent transition-colors"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -212,7 +218,7 @@ const Team: React.FC = () => {
 
                   <button
                     onClick={() => setSelectedMember(member)}
-                    className="text-sm font-medium text-teal-600 hover:text-teal-700 transition-colors"
+                    className="text-sm font-medium text-gray-600 hover:text-dosocket-accent transition-colors"
                   >
                     About
                   </button>
@@ -223,10 +229,10 @@ const Team: React.FC = () => {
         </div>
       </div>
 
-      {/* Modal */}
+      {/* Modal - Changed to white to match the cards */}
       {selectedMember && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
           onClick={() => setSelectedMember(null)}
         >
           <div
@@ -235,13 +241,14 @@ const Team: React.FC = () => {
           >
             <button
               onClick={() => setSelectedMember(null)}
-              className="absolute top-4 right-4 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+              className="absolute top-4 right-4 p-2 rounded-xl bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-900 transition-colors"
             >
               <X size={20} />
             </button>
 
             <div className="flex items-center gap-6 mb-6">
-              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-teal-500">
+              {/* Removed the border completely */}
+              <div className="w-20 h-20 rounded-2xl overflow-hidden bg-gray-100">
                 <img
                   src={selectedMember.image}
                   alt={selectedMember.name}
@@ -252,7 +259,7 @@ const Team: React.FC = () => {
                 <h3 className="font-bold text-2xl text-gray-900">
                   {selectedMember.name}
                 </h3>
-                <p className="text-gray-500 font-medium text-sm uppercase tracking-wider">
+                <p className="text-dosocket-accent/80 font-medium text-sm uppercase tracking-wider">
                   {selectedMember.role}
                 </p>
               </div>
@@ -264,7 +271,7 @@ const Team: React.FC = () => {
               </p>
 
               <div className="grid grid-cols-2 gap-4 mt-4">
-                <div className="bg-gray-50 p-3 rounded-xl">
+                <div className="bg-gray-50 border border-gray-100 p-3 rounded-xl">
                   <span className="block text-xs text-gray-400 uppercase tracking-wider font-bold mb-1">
                     Experience
                   </span>
@@ -272,7 +279,7 @@ const Team: React.FC = () => {
                     {selectedMember.experience}
                   </span>
                 </div>
-                <div className="bg-gray-50 p-3 rounded-xl">
+                <div className="bg-gray-50 border border-gray-100 p-3 rounded-xl">
                   <span className="block text-xs text-gray-400 uppercase tracking-wider font-bold mb-1">
                     Specialty
                   </span>
@@ -286,7 +293,7 @@ const Team: React.FC = () => {
             <div className="flex gap-3">
               <a
                 href={selectedMember.socials.portfolio || "#"}
-                className="flex-1 bg-gray-900 text-white py-3 rounded-xl font-bold text-center hover:bg-gray-800 transition-colors"
+                className="flex-1 bg-dosocket-900 text-white py-3 rounded-xl font-bold text-center hover:bg-dosocket-800 transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -296,7 +303,7 @@ const Team: React.FC = () => {
                 {selectedMember.socials.linkedin && (
                   <a
                     href={selectedMember.socials.linkedin}
-                    className="w-12 h-12 flex items-center justify-center rounded-xl border border-gray-200 text-gray-400 hover:border-teal-500 hover:text-teal-500 transition-colors"
+                    className="w-12 h-12 flex items-center justify-center rounded-xl border border-gray-200 text-gray-400 hover:border-dosocket-accent hover:text-dosocket-accent transition-colors"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -306,7 +313,7 @@ const Team: React.FC = () => {
                 {selectedMember.socials.instagram && (
                   <a
                     href={selectedMember.socials.instagram}
-                    className="w-12 h-12 flex items-center justify-center rounded-xl border border-gray-200 text-gray-400 hover:border-teal-500 hover:text-teal-500 transition-colors"
+                    className="w-12 h-12 flex items-center justify-center rounded-xl border border-gray-200 text-gray-400 hover:border-dosocket-accent hover:text-dosocket-accent transition-colors"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -316,7 +323,7 @@ const Team: React.FC = () => {
                 {selectedMember.socials.pinterest && (
                   <a
                     href={selectedMember.socials.pinterest}
-                    className="w-12 h-12 flex items-center justify-center rounded-xl border border-gray-200 text-gray-400 hover:border-teal-500 hover:text-teal-500 transition-colors"
+                    className="w-12 h-12 flex items-center justify-center rounded-xl border border-gray-200 text-gray-400 hover:border-dosocket-accent hover:text-dosocket-accent transition-colors"
                     target="_blank"
                     rel="noopener noreferrer"
                   >

@@ -92,7 +92,7 @@ const Services: React.FC = () => {
         {/* Header Section - Elegant and centered */}
         <div className="max-w-3xl mx-auto text-center mb-8 md:mb-12 lg:mb-16">
           <div className="inline-flex items-center gap-2 bg-dosocket-50 px-4 py-2 rounded-full mb-6">
-            <span className="w-2 h-2 rounded-full bg-dosocket-500 animate-pulse" />
+            {/* <span className="w-2 h-2 rounded-full bg-dosocket-500 animate-pulse" /> */}
             <SectionLabel text="How we create impact" />
           </div>
           <h2 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-dosocket-900 mb-6 tracking-tight">
@@ -214,6 +214,7 @@ const Services: React.FC = () => {
         </div>
 
         {/* Bottom CTA - Elegant */}
+        {/* Bottom CTA - Square Rounded */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -221,11 +222,14 @@ const Services: React.FC = () => {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="text-center mt-8 md:mt-12"
         >
-          <div className="inline-flex items-center gap-3 bg-white border border-gray-200 rounded-full px-6 py-3 shadow-lg shadow-gray-100/50 hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300">
+          {/* Changed rounded-full to rounded-2xl here */}
+          <div className="inline-flex flex-col sm:flex-row items-center gap-4 sm:gap-3 bg-white border border-gray-200 rounded-2xl px-4 sm:px-6 py-4 sm:py-3 shadow-lg shadow-gray-100/50 hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300">
             <span className="text-gray-600">Ready to start your project?</span>
+
+            {/* Changed rounded-full to rounded-xl, and decreased px-6 to px-4 here */}
             <a
               href="#contact"
-              className="inline-flex items-center gap-2 bg-dosocket-900 text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-dosocket-800 transition-colors"
+              className="inline-flex items-center justify-center w-full sm:w-auto gap-2 bg-dosocket-900 text-white px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-dosocket-800 transition-colors"
             >
               Let's talk
               <ArrowUpRight size={16} />
